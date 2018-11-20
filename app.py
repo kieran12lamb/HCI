@@ -8,11 +8,15 @@ prescriptionURL ='https://www.opendata.nhs.scot/api/3/action/datastore_search?re
 
 @app.route("/")
 def index():
-    fileobj = urllib.request.urlopen(gpURL+'limit=1&q=title:jones' )
-    print(fileobj.read())
     return render_template('index.html')
 
-
-@app.route("/graphs-warfarin")
-def graphs():
-    return "Here is the graphs"
+@app.route("/graphs/<drug>",methods = ['POST'])
+def graphs(drug):
+    if drug == 'warfarin':
+        fileobj = urllib.request.urlopen(gpURL+'limit=1&q=BNFItemDescription:methadone' )
+        print(fileobj.read())
+    elif drug == 'methadone':
+        print('boop2')
+    else:
+        print('boop3')
+    return render_template('graphs.html')

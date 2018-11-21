@@ -1,10 +1,8 @@
 from flask import Flask, request, render_template, abort, redirect, url_for, jsonify
 import json
 import urllib
-# from postcodes import PostCoder
 app = Flask(__name__)
 
-# pc = PostCoder()
 gpURL = 'https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=34f02dbe-2827-47ae-821f-d529e26075cd&q='
 prescriptionURL='https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=592f3b58-2da8-4cc7-b4ab-e0eb0f16aa3f&q='
 
@@ -24,7 +22,8 @@ def getGpData():
     postcodeToGPID = {}
     for gp in gpData:
         if str(gp['GPPractice']) not in postcodeToGPID:
-            postcodeToGPID[str(gp['GPPractice'])] = gp['Postcode']
+            postcodeAPI =   json.loads(urllib.request.urlopen('http://api.getthedata.com/postcode/'+gp['Postcode'].replace(' ','+')).read().decode('utf-8'))
+            postcodeToGPID[str(gp['GPPractice'])] = {'Postcode':gp['Postcode'],'lat':postcodeAPI['data']['latitude'],'lng': postcodeAPI['data']['longitude']}
     return postcodeToGPID
 
 postcodeToGPID = getGpData()
@@ -50,11 +49,12 @@ def graphs(drug):
         else:
             postcode = getPostcode(presciptions['GPPractice'])
             if postcode != None:
-                geocodes[presciptions['GPPractice']] = {  "postcode":postcode,
-                                                "count":1,
-                                                'medicine':drug,
-                                                # 'lat':pc.get(postcode=postcode)['lat'],
-                                                # 'lng':pc.get(postcode=postcode)['lng']
-                                         }
+                geocodes[presciptions['GPPractice']] = {
+                                                        "postcode":postcode['Postcode'],
+                                                        "count":1,
+                                                        'medicine':drug,
+                                                        'lat':postcode['lat'],
+                                                        'lng':postcode['lng']
+                                                        }
     print(geocodes)
     return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes)

@@ -13,6 +13,7 @@ def index():
 
 @app.route("/graphs/<drug>",methods = ['POST'])
 def graphs(drug):
+<<<<<<< HEAD
     if drug == 'warfarin':
         fileobj = urllib.request.urlopen(gpURL+'limit=1&q=BNFItemDescription:methadone' )
         print(fileobj.read())
@@ -21,3 +22,10 @@ def graphs(drug):
     else:
         print('boop3')
     return render_template('graphs.html')
+=======
+    url= prescriptionURL+drug
+    prescriptionData = urllib.request.urlopen(url)
+    prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
+    prescriptionData = prescriptionData['result']['records']
+    return render_template('graphs.html',prescriptionData = prescriptionData)
+>>>>>>> 55490c6e864991eaf98e110063a63b7d8bbbfb49

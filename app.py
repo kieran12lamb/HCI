@@ -12,18 +12,7 @@ def index():
 
 @app.route("/graphs/<drug>",methods = ['POST'])
 def graphs(drug):
-    if drug == 'warfarin':
-        url= prescriptionURL+drug
-        prescriptionData = urllib.request.urlopen(url)
-        prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
-        return render_template('graphs.html',prescriptionData = prescriptionData)
-    elif drug == 'methadone':
-        url= prescriptionURL+drug
-        prescriptionData = urllib.request.urlopen(url)
-        prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
-        return render_template('graphs.html',prescriptionData = prescriptionData)
-    else:
-        url= prescriptionURL+drug
-        prescriptionData = urllib.request.urlopen(url)
-        prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
-        return render_template('graphs.html',prescriptionData = prescriptionData)
+    url= prescriptionURL+drug
+    prescriptionData = urllib.request.urlopen(url)
+    prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
+    return render_template('graphs.html',prescriptionData = prescriptionData)

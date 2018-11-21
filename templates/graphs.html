@@ -5,9 +5,10 @@
     <title></title>
     <script>
       var prescriptionData = {{ prescriptionData|tojson }};
+      var geocodes = {{ geocodes|tojson }};
     </script>
   </head>
   <body>
-    <p>{{prescriptionData}}</p>
+    <p>{{geocodes}}</p>
   </body>
 </html>

@@ -15,4 +15,5 @@ def graphs(drug):
     url= prescriptionURL+drug
     prescriptionData = urllib.request.urlopen(url)
     prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
+    prescriptionData = prescriptionData['result']['records']
     return render_template('graphs.html',prescriptionData = prescriptionData)

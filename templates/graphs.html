@@ -6,10 +6,11 @@
     <script>
       var prescriptionData = {{ prescriptionData|tojson }};
     </script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   </head>
   <body>
     <div id="graph"></div>
     <p>{{prescriptionData}}</p>
   </body>
-  <script src="{{url_for('static', filename='/js/index.js')}}"></script>
+  <script src="{{url_for('static', filename='js/index.js')}}"></script>
 </html>

@@ -1,13 +1,16 @@
 lat = []
 lng = []
+sizes = []
 geocodes.forEach(function(object) {
   lat.push(object.lat);
   lng.push(object.lng);
+  sizes.push(parseInt(object.count)*5)
 });
+
+console.log(sizes)
 
 var data = [{
     type: 'scattergeo',
-    mode: 'markers',
     lat: lat,
     lon: lng,
     zmin: 0,
@@ -22,14 +25,10 @@ var data = [{
         thickness: 0.2
     },*/
     marker: {
-        line:{
-            color: 'rgb(255,255,255)',
-            width: 2
-        }
+        size: sizes
     }
 }];
 
-console.log(data);
 
 var layout = {
     width:1200,

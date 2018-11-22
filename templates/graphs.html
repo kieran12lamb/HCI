@@ -3,15 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
     <script>
       var prescriptionData = {{ prescriptionData|tojson }};
       var geocodes = {{ geocodes|tojson }};
     </script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  </head>
-  <body>
     <div id="graph"></div>
-    <p>{{geocodes}}</p>
   </body>
   <script src="{{url_for('static', filename='js/index.js')}}"></script>
 </html>

@@ -25,7 +25,11 @@ var data = [{
         thickness: 0.2
     },*/
     marker: {
-        size: sizes
+        size: sizes,
+        line: {
+            color: 'black',
+            width: 2
+        },
     }
 }];
 

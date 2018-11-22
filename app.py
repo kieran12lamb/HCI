@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template, abort, redirect, url_for, jsonify
 import json
 import urllib
+
 app = Flask(__name__)
 
 gpURL = 'https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=34f02dbe-2827-47ae-821f-d529e26075cd&q='
@@ -40,18 +41,22 @@ def index():
 @app.route("/graphs/<drug>",methods = ['POST'])
 def graphs(drug):
     prescriptionData = getPrescriptionData(drug)
-    geocodes = {}
-    for presciptions in prescriptionData:
-        if presciptions['GPPractice'] in geocodes:
-             geocodes[presciptions['GPPractice']]['count'] = geocodes[presciptions['GPPractice']]['count']+1
+    geocodes = []
+    for prescriptions in prescriptionData:
+        for g in geocodes:
+            if (g['GPPractice']  == prescriptions['GPPractice']):
+                g['count'] = g['count']+1
         else:
-            postcode = getPostcode(presciptions['GPPractice'])
+            postcode = getPostcode(prescriptions['GPPractice'])
             if postcode != None:
-                geocodes[presciptions['GPPractice']] = {
-                                                        "postcode":postcode['Postcode'],
-                                                        "count":1,
-                                                        'medicine':drug,
-                                                        'lat':postcode['lat'],
-                                                        'lng':postcode['lng']
-                                                        }
+                geocode = {
+                    'GPPractice': prescriptions['GPPractice'],
+                    "postcode":postcode['Postcode'],
+                    "count":1,
+                    'medicine':drug,
+                    'lat':postcode['lat'],
+                    'lng':postcode['lng']
+                }
+                geocodes.append(geocode.copy())
+    print(geocodes)
     return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes)

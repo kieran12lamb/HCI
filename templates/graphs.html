@@ -2,23 +2,15 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="static/images/medicine.jpg">
-    <title>Medicine Mapper</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title></title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  </head>
+  <body>
     <script>
       var prescriptionData = {{ prescriptionData|tojson }};
       var geocodes = {{ geocodes|tojson }};
     </script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  </head>
-
-
-  <body>
     <div id="graph"></div>
-    <p>{{geocodes}}</p>
   </body>
   <script src="{{url_for('static', filename='js/index.js')}}"></script>
 </html>

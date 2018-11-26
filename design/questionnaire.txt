@@ -1,0 +1,4 @@
+1.    How easy did you find the app to be? Rate on a scale of 1–10 (1 being very complex, 10 being very easy)
+2.    Is the user interface pleasing to look at & work with? Rate the UI design on a scale of 1–10 based on design preference?
+3.    Which feature of the web app is the most useful for you and why?
+4.    Please highlight any feature that you feel is missing from the app.

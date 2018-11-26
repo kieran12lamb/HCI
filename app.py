@@ -16,6 +16,7 @@ def getGpData():
         if str(gp['GPPractice']) not in postcodeToGPID:
             postcodeAPI =   json.loads(urllib.request.urlopen('http://api.getthedata.com/postcode/'+gp['Postcode'].replace(' ','+')).read().decode('utf-8'))
             postcodeToGPID[str(gp['GPPractice'])] = {'Postcode':gp['Postcode'],'lat':postcodeAPI['data']['latitude'],'lng': postcodeAPI['data']['longitude']}
+            print('postcode')
     return postcodeToGPID
 postcodeToGPID = getGpData()
 
@@ -40,8 +41,12 @@ def index():
 
 @app.route("/graphs/<drug>",methods = ['POST'])
 def graphs(drug):
+    if drug == "search":
+        print(request.form)
+        drug = request.form['drug']
     prescriptionData = getPrescriptionData(drug)
     geocodes = []
+
     for prescriptions in prescriptionData:
         for g in geocodes:
             if (g['GPPractice']  == prescriptions['GPPractice']):
@@ -58,5 +63,4 @@ def graphs(drug):
                     'lng':postcode['lng']
                 }
                 geocodes.append(geocode.copy())
-    print(geocodes)
     return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes)

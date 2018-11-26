@@ -63,4 +63,4 @@ def graphs(drug):
                     'lng':postcode['lng']
                 }
                 geocodes.append(geocode.copy())
-    return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes)
+    return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes,prescriptionName = drug)

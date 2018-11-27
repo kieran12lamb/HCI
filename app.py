@@ -61,6 +61,7 @@ def graphs(drug):
         drug = request.form['drug']
     prescriptionData = getPrescriptionData(drug,'August')+getPrescriptionData(drug,'July')+getPrescriptionData(drug,'June')
     geocodes = []
+    addedPractices = []
 
     for prescriptions in prescriptionData:
         for g in geocodes:
@@ -75,7 +76,9 @@ def graphs(drug):
                     "count":1,
                     'medicine':drug,
                     'lat':postcode['lat'],
-                    'lng':postcode['lng']
+                    'lng':postcode['lng'],
+                    'month': prescriptions['month']
+
                 }
                 geocodes.append(geocode.copy())
 

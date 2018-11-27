@@ -1,46 +1,123 @@
-lat = []
-lng = []
-sizes = []
+var lat = []
+var lng = []
+var sizes = []
+var colours = []
+var postcodes = []
+var totals = [0,0,0]
+var months = ["June", "July", "August"]
+var data;
+var layout;
 
-geocodes.forEach(function(object) {
-  lat.push(object.lat);
-  lng.push(object.lng);
-  sizes.push(parseInt(object.count)*5)
-});
+function getGeocodeData() {
+  geocodes.forEach(function(object) {
+    lat.push(object.lat);
+    lng.push(object.lng);
+    sizes.push(parseInt(object.count)*4)
+    if (object.count <= 1) {
+      colours.push("white")
+    }
+    else if (object.count > 1 && object.count<=3) {
+      colours.push("yellow")
+    }
+    else if (object.count > 3 && object.count<=5) {
+      colours.push("orange")
+    }
+    else colours.push("red")
+    postcodes.push(object.postcode)
+  });
+}
 
-var data = [{
-  type:'scattermapbox',
-  lat: lat,
-  lon: lng,
-  mode: 'markers',
-  marker: {
-    size: sizes
+function getDataForMap() {
+  data = [{
+    type:'scattermapbox',
+    lat: lat,
+    lon: lng,
+    postcode: postcodes,
+    hoverinfo: 'postcode',
+    mode: 'markers',
+    marker: {
+      size: sizes,
+      color: colours
+    }
+  }]
+
+  layout = {
+      style: 'dark',
+      autosize: true,
+      hovermode:'closest',
+      mapbox: {
+        bearing:0,
+        center: {
+          lat:56.4907,
+          lon:-4.2026
+        },
+        pitch:0,
+        zoom:5
+      }
+    }
+}
+
+function plotMap() {
+  Plotly.setPlotConfig({
+    mapboxAccessToken: 'pk.eyJ1IjoiY2hyaXNiOTcxOSIsImEiOiJjam95aWQ4YncyYzU0M3BsazVqMjZlbHlwIn0.lnsr5Pdz83SXN6kca0Slbw'
+  })
+
+  Plotly.plot('graph', data, layout)
+}
+
+function update() {
+  var ud = {
+    transforms: [{
+      type: 'filter',
+      target: 'month',
+      operation: '==',
+      value: 'August'
+    }]
   }
-}]
-
-console.log(data);
-
-
-var layout = {
-  autosize: true,
-  hovermode:'closest',
-  mapbox: {
-    bearing:0,
-    center: {
-      lat:56.4907,
-      lon:-4.2026
-    },
-    pitch:0,
-    zoom:5
-  },
 }
 
 
-Plotly.setPlotConfig({
-  mapboxAccessToken: 'pk.eyJ1IjoiY2hyaXNiOTcxOSIsImEiOiJjam95aWQ4YncyYzU0M3BsazVqMjZlbHlwIn0.lnsr5Pdz83SXN6kca0Slbw'
-})
+function getTotalsPerMonth() {
+  geocodes.forEach(function(data) {
+    if (data.month == "June") {
+      totals[0]++;
+    }
+    else if (data.month == "July") {
+      totals[1]++;
+    }
+    else if (data.month == "August") {
+      totals[2]++;
+    }
+  })
+}
 
-Plotly.plot('graph', data, layout)
+function plotLineGraph() {
+  var max = totals.reduce(function(a, b) {return Math.max(a, b);});
+  var trace = {
+    x: months,
+    y: totals,
+    mode: 'markers+lines'
+  };
+  var dat = [trace];
+  var lout = {
+    yaxis: {
+        range: [0, max + 100]
+    },
+    title: "Number of prescriptions by month"
+  };
+  Plotly.newPlot('line', dat, lout);
+}
+
+
+getTotalsPerMonth();
+console.log(Math.max(totals));
+plotLineGraph();
+getGeocodeData();
+getDataForMap();
+plotMap();
+
+
+
 /**
 console.log(sizes)
 

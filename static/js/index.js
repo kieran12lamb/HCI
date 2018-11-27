@@ -175,6 +175,11 @@ function getPrescriptionPerCity() {
 function plotCityTotals() {
   var cities = Object.keys(cityTotals);
   var values = Object.keys(cityTotals).map(function(key){return cityTotals[key];});
+  //console.log(cities);
+  //console.log(values);
+  var layout = {
+    autosize:true,
+  }
 
   var data = [{
     x: cities,

@@ -25,12 +25,15 @@ def getGpData():
     return postcodeToGPID
 postcodeToGPID = getGpData()
 
-def getPrescriptionData(drug):
+def getPrescriptionData(drug,month):
     limit = '&limit=1000000'
+    prescriptionURL = prescriptionURLs[month]
     url= prescriptionURL+drug+limit
     prescriptionData = urllib.request.urlopen(url)
     prescriptionData = json.loads(prescriptionData.read().decode('utf-8'))
     prescriptionData = prescriptionData['result']['records']
+    for data in prescriptionData:
+        data['month'] = month
     return prescriptionData
 
 def getPostcode(gpID):
@@ -56,7 +59,7 @@ def graphs(drug):
 
     if drug == "search":
         drug = request.form['drug']
-    prescriptionData = getPrescriptionData(drug)
+    prescriptionData = getPrescriptionData(drug,'August')+getPrescriptionData(drug,'July')+getPrescriptionData(drug,'June')
     geocodes = []
 
     for prescriptions in prescriptionData:

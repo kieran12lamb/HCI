@@ -5,6 +5,7 @@ var colours = []
 var postcodes = []
 var totals = [0,0,0]
 var months = ["June", "July", "August"]
+var cityTotals = {};
 var data;
 var layout;
 
@@ -13,13 +14,13 @@ function getGeocodeData() {
     lat.push(object.lat);
     lng.push(object.lng);
     sizes.push(parseInt(object.count)*4)
-    if (object.count <= 1) {
+    if (object.count <= 2) {
       colours.push("white")
     }
-    else if (object.count > 1 && object.count<=3) {
+    else if (object.count > 2 && object.count<=5) {
       colours.push("yellow")
     }
-    else if (object.count > 3 && object.count<=5) {
+    else if (object.count > 5 && object.count<=9) {
       colours.push("orange")
     }
     else colours.push("red")
@@ -100,6 +101,7 @@ function plotLineGraph() {
   };
   var dat = [trace];
   var lout = {
+    autoscale: true,
     yaxis: {
         range: [0, max + 100]
     },
@@ -108,9 +110,65 @@ function plotLineGraph() {
   Plotly.newPlot('line', dat, lout);
 }
 
+function getPrescriptionPerCity() {
+  geocodes.forEach(function(d) {
+    var indicator = d.postcode.charAt(0);
+    switch(indicator) {
+      case "M":
+        if ("Coatbridge" in cityTotals) cityTotals["Coatbridge"]++;
+        else cityTotals["Coatbridge"] = 1;
+        break;
+      case "T":
+        if ("Melrose" in cityTotals) cityTotals["Melrose"]++;
+        else cityTotals["Melrose"] = 1;
+        break;
+      case "F":
+        if ("Stirling" in cityTotals) cityTotals["Stirling"]++;
+        else cityTotals["Stirling"] = 1;
+        break;
+      case "G":
+        if ("Glasgow" in cityTotals) cityTotals["Glasgow"]++;
+        else cityTotals["Glasgow"] = 1;
+        break;
+      case"E":
+        if ("Edinburgh" in cityTotals) cityTotals["Edinburgh"]++;
+        else cityTotals["Edinburgh"] = 1;
+        break;
+      case "A":
+        if ("Aberdeen" in cityTotals) cityTotals["Aberdeen"]++;
+        else cityTotals["Aberdeen"] = 1;
+        break;
+      case "I":
+        if ("Inverness" in cityTotals) cityTotals["Inverness"]++;
+        else cityTotals["Inverness"] = 1;
+        break;
+      case "D":
+        if ("Dundee" in cityTotals) cityTotals["Dundee"]++;
+        else cityTotals["Dundee"] = 1;
+        break;
+      }
+    })
+  }
 
+function plotCityTotals() {
+  var cities = Object.keys(cityTotals);
+  var values = Object.keys(cityTotals).map(function(key){return cityTotals[key];});
+  console.log(cities);
+  console.log(values);
+
+  var data = [{
+    x: cities,
+    y: values,
+    type: 'bar',
+  }];
+  Plotly.newPlot('hist', data);
+}
+
+
+getPrescriptionPerCity();
+plotCityTotals();
+console.log(cityTotals);
 getTotalsPerMonth();
-console.log(Math.max(totals));
 plotLineGraph();
 getGeocodeData();
 getDataForMap();

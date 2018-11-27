@@ -60,17 +60,16 @@ def graphs(drug):
     if drug == "search":
         drug = request.form['drug']
     prescriptionData = getPrescriptionData(drug,'August')+getPrescriptionData(drug,'July')+getPrescriptionData(drug,'June')
-    geocodes = []
+    geocodes = {}
     addedPractices = []
 
     for prescriptions in prescriptionData:
-        for g in geocodes:
-            if (g['GPPractice']  == prescriptions['GPPractice']):
-                g['count'] = g['count']+1
+        if prescriptions['GPPractice'] in geocodes:
+            geocodes[prescriptions['GPPractice']]['count'] = geocodes[prescriptions['GPPractice']]['count']+1
         else:
             postcode = getPostcode(prescriptions['GPPractice'])
             if postcode != None:
-                geocode = {
+                geocodes[prescriptions['GPPractice']] = {
                     'GPPractice': prescriptions['GPPractice'],
                     "postcode":postcode['Postcode'],
                     "count":1,
@@ -78,8 +77,5 @@ def graphs(drug):
                     'lat':postcode['lat'],
                     'lng':postcode['lng'],
                     'month': prescriptions['month']
-
                 }
-                geocodes.append(geocode.copy())
-
     return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes,prescriptionName = drug, map=data)

@@ -99,8 +99,12 @@ function getTotalsPerMonth() {
 }
 
 function plotLineGraph() {
-  var m = Object.keys(monthTotals);
-  var values = Object.keys(monthTotals).map(function(key){return monthTotals[key];});
+  var m = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  var values = []
+  m.forEach(function(month) {
+    console.log(month + ": " + monthTotals[month]);
+    values.push(monthTotals[month]);
+  })
   console.log(m);
   console.log(values);
   //var max = values.reduce(function(a, b) {return Math.max(a, b);});

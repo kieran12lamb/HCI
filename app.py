@@ -7,6 +7,12 @@ app = Flask(__name__)
 gpURL = 'https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=34f02dbe-2827-47ae-821f-d529e26075cd&q='
 prescriptionURL='https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=592f3b58-2da8-4cc7-b4ab-e0eb0f16aa3f&q='
 
+prescriptionURLs = { 'August':"https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=592f3b58-2da8-4cc7-b4ab-e0eb0f16aa3f&q=",
+                     'July':"https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=fec5dfdb-96dc-4e87-b7a0-6ecf20ec86e9&q=",
+                     'June':"https://www.opendata.nhs.scot/api/3/action/datastore_search?resource_id=d73cfc66-3330-416f-8507-873db28eca5c&q=",
+                    }
+
+
 def getGpData():
     limit = '&limit=1000000'
     gpData = urllib.request.urlopen(gpURL+limit)

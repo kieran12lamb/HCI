@@ -4,30 +4,21 @@ var sizes = []
 var colours = []
 var postcodes = []
 var totals = [0,0,0]
-var months = ["June", "July", "August"]
+var months = {};
 var cityTotals = {};
 var data;
 var layout;
 
 function getGeocodeData() {
-<<<<<<< HEAD
-  geocodes.forEach(function(object) {
-    lat.push(object.lat);
-    lng.push(object.lng);
-    sizes.push(parseInt(object.count)*4)
-    if (object.count <= 2) {
-      colours.push("white")
-    }
-    else if (object.count > 2 && object.count<=5) {
-      colours.push("yellow")
-    }
-    else if (object.count > 5 && object.count<=9) {
-=======
   for(var geo in geocodes){
     geoJson = geocodes[geo]
     lat.push(geoJson.lat);
     lng.push(geoJson.lng);
-    sizes.push(parseInt(geoJson.count)*4)
+    var count = 0;
+    for (var m in geoJson.months) {
+      console.log(m);
+    }
+    sizes.push(parseInt(geoJson.count)*3)
     if (geoJson.count <= 1) {
       colours.push("white")
     }
@@ -35,7 +26,6 @@ function getGeocodeData() {
       colours.push("yellow")
     }
     else if (geoJson.count > 3 && geoJson.count<=5) {
->>>>>>> b3322531351aeb6c1f75cefb4511869f613bd04f
       colours.push("orange")
     }
     else colours.push("red")
@@ -96,39 +86,40 @@ function update() {
 function getTotalsPerMonth() {
   for(var geo in geocodes){
     data = geocodes[geo]
-    if (data.month == "June") {
-      totals[0]++;
+    var month = geoJson.month;
+    if (month in months) {
+      months[month] += 1;
     }
-    else if (data.month == "July") {
-      totals[1]++;
-    }
-    else if (data.month == "August") {
-      totals[2]++;
-    }
+    else months[month] = 1;
   }
 }
 
 function plotLineGraph() {
-  var max = totals.reduce(function(a, b) {return Math.max(a, b);});
+  var m = Object.keys(months);
+  var values = Object.keys(months).map(function(key){return months[key];});
+  console.log(m);
+  console.log(values);
+  //var max = values.reduce(function(a, b) {return Math.max(a, b);});
   var trace = {
-    x: months,
-    y: totals,
+    x: m,
+    y: values,
     mode: 'markers+lines'
   };
   var dat = [trace];
   var lout = {
     autoscale: true,
-    yaxis: {
+    /**yaxis: {
         range: [0, max + 100]
-    },
+    },*/
     title: "Number of prescriptions by month"
   };
   Plotly.newPlot('line', dat, lout);
 }
 
 function getPrescriptionPerCity() {
-  geocodes.forEach(function(d) {
-    var indicator = d.postcode.charAt(0);
+  for(var geo in geocodes) {
+    geoJson = geocodes[geo]
+    var indicator = geoJson.postcode.charAt(0);
     switch(indicator) {
       case "M":
         if ("Coatbridge" in cityTotals) cityTotals["Coatbridge"]++;
@@ -162,15 +153,19 @@ function getPrescriptionPerCity() {
         if ("Dundee" in cityTotals) cityTotals["Dundee"]++;
         else cityTotals["Dundee"] = 1;
         break;
+      case "K":
+        if ("Prestwick" in cityTotals) cityTotals["Prestwick"]++;
+        else cityTotals["Prestwick"] = 1;
+        break;
       }
-    })
+    }
   }
 
 function plotCityTotals() {
   var cities = Object.keys(cityTotals);
   var values = Object.keys(cityTotals).map(function(key){return cityTotals[key];});
-  console.log(cities);
-  console.log(values);
+  //console.log(cities);
+  //console.log(values);
 
   var data = [{
     x: cities,

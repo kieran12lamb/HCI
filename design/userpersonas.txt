@@ -2,7 +2,7 @@ Name : Maria Strong
 Occupation : Medical Student
 Education : Undergraduate
 
-Second year med student living in the southside of Glasgow. Smart is researching methadone dependancy in Scotland and is keen
+Second year med student living in the southside of Glasgow. Maria is researching methadone dependancy in Scotland and is keen
 to see the volume of prescriptions in his surrounding area in comparison with the rest of Scotland, particularly to identify
 whether Glasgow or Edinburgh are giving a greater number of prescriptions.
 
@@ -17,5 +17,4 @@ Name: Peter H Davis
 Occupation : PhD Student
 Education : Postgraduate
 
-X. Would like to see prescription data for Warfarin across the country to see the spread of circulatory diseases in populated and
-rural areas so as to compare with dietary statistics and see if there is a correlation.
+PhD student studying at Edinburgh University. Would like to see prescription data for Warfarin across the country to see the spread of circulatory diseases in populated and rural areas so as to compare with dietary statistics and see if there is a correlation.

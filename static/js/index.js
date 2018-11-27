@@ -4,7 +4,7 @@ var sizes = []
 var colours = []
 var postcodes = []
 var totals = [0,0,0]
-var months = {};
+var monthTotals = {};
 var cityTotals = {};
 var data;
 var layout;
@@ -88,17 +88,19 @@ function update() {
 function getTotalsPerMonth() {
   for(var geo in geocodes){
     data = geocodes[geo]
-    var month = geoJson.month;
-    if (month in months) {
-      months[month] += 1;
+    for (var month in data.months) {
+      if (month in monthTotals) {
+        monthTotals[month] += data.months[month];
+      }
+      else monthTotals[month] = data.months[month];
     }
-    else months[month] = 1;
   }
+  console.log(monthTotals);
 }
 
 function plotLineGraph() {
-  var m = Object.keys(months);
-  var values = Object.keys(months).map(function(key){return months[key];});
+  var m = Object.keys(monthTotals);
+  var values = Object.keys(monthTotals).map(function(key){return monthTotals[key];});
   console.log(m);
   console.log(values);
   //var max = values.reduce(function(a, b) {return Math.max(a, b);});

@@ -8,6 +8,11 @@ var monthTotals = {};
 var cityTotals = {};
 var data;
 var layout;
+var westCoast = ["Prestwick", "Glasgow", "Coatbridge"];
+var eastCoast = ["Edinburgh", "Stirling"];
+var north = ["Aberdeen", "Dundee"];
+var south = ["Melrose"];
+
 
 function getGeocodeData() {
   for(var geo in geocodes){
@@ -95,19 +100,14 @@ function getTotalsPerMonth() {
       else monthTotals[month] = data.months[month];
     }
   }
-  console.log(monthTotals);
 }
 
 function plotLineGraph() {
   var m = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var values = []
   m.forEach(function(month) {
-    console.log(month + ": " + monthTotals[month]);
     values.push(monthTotals[month]);
   })
-  console.log(m);
-  console.log(values);
-  //var max = values.reduce(function(a, b) {return Math.max(a, b);});
   var trace = {
     x: m,
     y: values,
@@ -116,9 +116,6 @@ function plotLineGraph() {
   var dat = [trace];
   var lout = {
     autoscale: true,
-    /**yaxis: {
-        range: [0, max + 100]
-    },*/
     title: "Number of prescriptions by month"
   };
   Plotly.newPlot('line', dat, lout);
@@ -178,8 +175,6 @@ function getPrescriptionPerCity() {
 function plotCityTotals() {
   var cities = Object.keys(cityTotals);
   var values = Object.keys(cityTotals).map(function(key){return cityTotals[key];});
-  //console.log(cities);
-  //console.log(values);
 
   var data = [{
     x: cities,
@@ -189,6 +184,47 @@ function plotCityTotals() {
   Plotly.newPlot('hist', data);
 }
 
+function updateCityGraph(filter) {
+  if (filter == "coasts") {
+    var coastDict = {"East Coast": 0, "West Coast": 0, "North": 0, "South": 0};
+    var c = Object.keys(cityTotals);
+    console.log(c);
+    c.forEach(function(city) {
+      if (eastCoast.indexOf(city) > -1) {
+        coastDict["East Coast"] += cityTotals[city];
+      }
+      else if (westCoast.indexOf(city) > -1) {
+        coastDict["West Coast"] += cityTotals[city];
+      }
+      else if (north.indexOf(city) > -1) {
+        coastDict["North"] += cityTotals[city];
+      }
+      else if (south.indexOf(city) > -1) {
+        coastDict["South"] += cityTotals[city];
+      }
+    })
+    var coasts = Object.keys(coastDict);
+    var values = Object.keys(coastDict).map(function(key){return coastDict[key];});
+
+    console.log("Coasts: " + coasts);
+    console.log("Values: " + values);
+
+    var data = [{
+      x: coasts,
+      y: values,
+      type: 'bar',
+    }];
+    Plotly.newPlot('hist', data);
+  }
+  else if (filter == 'citiesAndTowns') {
+    plotCityTotals();
+  }
+}
+
+document.getElementById("myList").onchange = function() {
+   updateCityGraph(this.value);
+   return false
+};
 
 getPrescriptionPerCity();
 plotCityTotals();

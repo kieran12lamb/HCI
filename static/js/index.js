@@ -124,42 +124,48 @@ function getPrescriptionPerCity() {
   for(var geo in geocodes) {
     geoJson = geocodes[geo]
     var indicator = geoJson.postcode.charAt(0);
+    var c = 0;
+    for (var i in geoJson.months) {
+      c += geoJson.months[i];
+    }
     switch(indicator) {
       case "M":
-        if ("Coatbridge" in cityTotals) cityTotals["Coatbridge"]++;
-        else cityTotals["Coatbridge"] = 1;
+        if ("Coatbridge" in cityTotals) {
+          cityTotals["Coatbridge"] += c;
+        }
+        else cityTotals["Coatbridge"] = c;
         break;
       case "T":
-        if ("Melrose" in cityTotals) cityTotals["Melrose"]++;
-        else cityTotals["Melrose"] = 1;
+        if ("Melrose" in cityTotals) cityTotals["Melrose"]+=c;
+        else cityTotals["Melrose"] = c;
         break;
       case "F":
-        if ("Stirling" in cityTotals) cityTotals["Stirling"]++;
-        else cityTotals["Stirling"] = 1;
+        if ("Stirling" in cityTotals) cityTotals["Stirling"]+c;
+        else cityTotals["Stirling"] = c;
         break;
       case "G":
-        if ("Glasgow" in cityTotals) cityTotals["Glasgow"]++;
-        else cityTotals["Glasgow"] = 1;
+        if ("Glasgow" in cityTotals) cityTotals["Glasgow"]+=c;
+        else cityTotals["Glasgow"] = c;
         break;
       case"E":
-        if ("Edinburgh" in cityTotals) cityTotals["Edinburgh"]++;
-        else cityTotals["Edinburgh"] = 1;
+        if ("Edinburgh" in cityTotals) cityTotals["Edinburgh"]+=c;
+        else cityTotals["Edinburgh"] = c;
         break;
       case "A":
-        if ("Aberdeen" in cityTotals) cityTotals["Aberdeen"]++;
-        else cityTotals["Aberdeen"] = 1;
+        if ("Aberdeen" in cityTotals) cityTotals["Aberdeen"]+=c;
+        else cityTotals["Aberdeen"] = c;
         break;
       case "I":
-        if ("Inverness" in cityTotals) cityTotals["Inverness"]++;
-        else cityTotals["Inverness"] = 1;
+        if ("Inverness" in cityTotals) cityTotals["Inverness"]+=c;
+        else cityTotals["Inverness"] = c;
         break;
       case "D":
-        if ("Dundee" in cityTotals) cityTotals["Dundee"]++;
-        else cityTotals["Dundee"] = 1;
+        if ("Dundee" in cityTotals) cityTotals["Dundee"]+=c;
+        else cityTotals["Dundee"] = c;
         break;
       case "K":
-        if ("Prestwick" in cityTotals) cityTotals["Prestwick"]++;
-        else cityTotals["Prestwick"] = 1;
+        if ("Prestwick" in cityTotals) cityTotals["Prestwick"]+=c;
+        else cityTotals["Prestwick"] = c;
         break;
       }
     }

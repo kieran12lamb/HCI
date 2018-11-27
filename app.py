@@ -24,7 +24,7 @@ def getGpData():
     postcodeToGPID = {}
     for gp in gpData:
         if str(gp['GPPractice']) not in postcodeToGPID:
-            postcodeAPI =   json.loads(urllib.request.urlopen('http://api.getthedata.com/postcode/'+gp['Postcode'].replace(' ','+')).read().decode('utf-8'))
+            postcodeAPI =   json.loads(urllib.request.urlopen('http://api.getthedata.com/postcode/'+gp['Postcode'].replace(' ','')).read().decode('utf-8'))
             postcodeToGPID[str(gp['GPPractice'])] = {'Postcode':gp['Postcode'],'lat':postcodeAPI['data']['latitude'],'lng': postcodeAPI['data']['longitude']}
     return postcodeToGPID
 postcodeToGPID = getGpData()

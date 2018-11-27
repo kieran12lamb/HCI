@@ -14,24 +14,26 @@ function getGeocodeData() {
     geoJson = geocodes[geo]
     lat.push(geoJson.lat);
     lng.push(geoJson.lng);
+
     var count = 0;
     for (var m in geoJson.months) {
-      console.log(m);
+      count += geoJson.months[m];
     }
-    sizes.push(parseInt(geoJson.count)*3)
-    if (geoJson.count <= 1) {
+    sizes.push(count)
+    if (count <= 3) {
       colours.push("white")
     }
-    else if (geoJson.count > 1 && geoJson.count<=3) {
+    else if (count > 3 && count<=6) {
       colours.push("yellow")
     }
-    else if (geoJson.count > 3 && geoJson.count<=5) {
+    else if (count > 6 && count<=10) {
       colours.push("orange")
     }
     else colours.push("red")
     postcodes.push(geoJson.postcode)
   };
 }
+
 
 function getDataForMap() {
   data = [{
@@ -182,6 +184,7 @@ console.log(cityTotals);
 getTotalsPerMonth();
 plotLineGraph();
 getGeocodeData();
+console.log(sizes);
 getDataForMap();
 plotMap();
 

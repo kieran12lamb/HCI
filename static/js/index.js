@@ -10,6 +10,7 @@ var data;
 var layout;
 
 function getGeocodeData() {
+<<<<<<< HEAD
   geocodes.forEach(function(object) {
     lat.push(object.lat);
     lng.push(object.lng);
@@ -21,11 +22,25 @@ function getGeocodeData() {
       colours.push("yellow")
     }
     else if (object.count > 5 && object.count<=9) {
+=======
+  for(var geo in geocodes){
+    geoJson = geocodes[geo]
+    lat.push(geoJson.lat);
+    lng.push(geoJson.lng);
+    sizes.push(parseInt(geoJson.count)*4)
+    if (geoJson.count <= 1) {
+      colours.push("white")
+    }
+    else if (geoJson.count > 1 && geoJson.count<=3) {
+      colours.push("yellow")
+    }
+    else if (geoJson.count > 3 && geoJson.count<=5) {
+>>>>>>> b3322531351aeb6c1f75cefb4511869f613bd04f
       colours.push("orange")
     }
     else colours.push("red")
-    postcodes.push(object.postcode)
-  });
+    postcodes.push(geoJson.postcode)
+  };
 }
 
 function getDataForMap() {
@@ -79,7 +94,8 @@ function update() {
 
 
 function getTotalsPerMonth() {
-  geocodes.forEach(function(data) {
+  for(var geo in geocodes){
+    data = geocodes[geo]
     if (data.month == "June") {
       totals[0]++;
     }
@@ -89,7 +105,7 @@ function getTotalsPerMonth() {
     else if (data.month == "August") {
       totals[2]++;
     }
-  })
+  }
 }
 
 function plotLineGraph() {

@@ -43,20 +43,19 @@
           <div id="hist"></div>
           <div id="line"></div>
         </div>
-        <p>{{paragraphs}}</p>
+        <p style="padding-top:40px; padding-right:40px; padding-left:40px">{{paragraphs}}</p>
       </div>
-      <div class="row" style="background-color:#C3E1FF; border-radius:8px; padding-top:20px; padding-bottom: 20px; height:auto">
-        <div class="col-lg-12">
-          <p>Alternatively, type in a prescription medicine you want to see graphed and our fantastic software will do it for you!</p>
         </div>
-        <form action="/graphs/search" method="post">
+        <div class="col-lg-12">
+          <p style="padding-top:40px">Alternatively, type in a prescription medicine you want to see graphed and our fantastic software will do it for you!</p>
+        </div>
+        <form action="/graphs/search" method="post" style="width:400px">
           <div class="input-group col-lg-12">
             <input id='drugSearch' name='drug' type="text" class="form-control" placeholder="Search for...">
             <span class="input-group-btn"><button type="submit" name='searchButton'  id='searchButton' type="button" class="btn btn-md btn-primary">Click Here</button></span>
           </div>
         </form>
-      </div>
-    </div>
+
   </div>
   <br>
   <br>

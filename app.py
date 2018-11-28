@@ -62,6 +62,7 @@ def generateAnalysis(drug):
         paragraphs.append(
             ""
         )
+    return paragraphs
 
 
 @app.route("/")
@@ -78,8 +79,7 @@ def graphs(drug):
     with app.open_resource('static/json/administrative/sco/lad.json') as f:
         data = json.load(f)
 
-    paragraphs = generateAnalysis()
-
+    paragraphs = generateAnalysis(drug=drug)
 
     if drug == "search":
         drug = request.form['drug']

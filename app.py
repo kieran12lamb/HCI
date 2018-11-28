@@ -46,6 +46,14 @@ def getPostcode(gpID):
     except:
         return None
 
+def generateAnalysis(drug):
+    paragraphs = []
+    if drug == 'Warfarin':
+        paragraphs.append("Cardivascular Diseases are one of the leading causes of death in the Scotland. Warfarin is used as a way to thin patients blood and prevent blood clots, thus it is a useful indicator of the cardiovascular health of an area."+
+                "From our distribution map above and using warfarin as our indicator, it becomes clear that the west of Scotland has a much higher incidence of cardiovascular disease than the rest of the country. "+
+                "The central belt in general has a higher incidence and this trends downwards the further north you go. This is posibly due to the greater availibility of fast foods availible in more densly populated areas.")
+        p2 =
+
 
 @app.route("/")
 def index():
@@ -60,6 +68,9 @@ def graphs(drug):
     #filename = os.path.join(app.static_folder, '/json/administrative/sco/lad.json')
     with app.open_resource('static/json/administrative/sco/lad.json') as f:
         data = json.load(f)
+
+    paragraphs = generateAnalysis()
+
 
     if drug == "search":
         drug = request.form['drug']

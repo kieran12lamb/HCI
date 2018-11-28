@@ -179,7 +179,7 @@ function getPrescriptionPerCity() {
         addTotals(c, null, "West Coast", "Coatbridge");
         break;
       case "T":
-        addTotals(c, null, "South", "Melrose");
+        addTotals(c, null, "Border", "Melrose");
         break;
       case "F":
         if (indicator2 == "K") {
@@ -205,7 +205,7 @@ function getPrescriptionPerCity() {
         }
         break;
       case "D":
-        addTotals(c, "Dundee", "North");
+        addTotals(c, "Dundee", "North Coast");
         break;
       case "K":
         addTotals(c, null, "West Coast", "Prestwick");

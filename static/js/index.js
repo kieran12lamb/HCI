@@ -5,13 +5,11 @@ var colours = []
 var postcodes = []
 var totals = [0,0,0]
 var monthTotals = {};
-var cityTotals = {};
 var data;
 var layout;
-var westCoast = ["Prestwick", "Glasgow", "Coatbridge"];
-var eastCoast = ["Edinburgh", "Stirling"];
-var north = ["Aberdeen", "Dundee"];
-var south = ["Melrose"];
+var cityTotals = {};
+var coastTotals = {};
+var townTotals = {};
 
 
 function getGeocodeData() {
@@ -28,10 +26,10 @@ function getGeocodeData() {
     if (count <= 3) {
       colours.push("white")
     }
-    else if (count > 3 && count<=6) {
+    else if (count > 3 && count<=7) {
       colours.push("yellow")
     }
-    else if (count > 6 && count<=10) {
+    else if (count > 7 && count<=12) {
       colours.push("orange")
     }
     else colours.push("red")
@@ -78,18 +76,8 @@ function plotMap() {
   Plotly.plot('graph', data, layout)
 }
 
-function update() {
-  var ud = {
-    transforms: [{
-      type: 'filter',
-      target: 'month',
-      operation: '==',
-      value: 'August'
-    }]
-  }
-}
 
-
+//Line graph
 function getTotalsPerMonth() {
   for(var geo in geocodes){
     data = geocodes[geo]
@@ -120,6 +108,13 @@ function plotLineGraph() {
   };
   Plotly.newPlot('line', dat, lout);
 }
+//
+
+function addTotals(count, city, coast, town) {
+  if (city != null) cityTotals[city] = (cityTotals[city] || count) + count;
+  if (coast != null) coastTotals[coast] = (coastTotals[coast] || count) + count;
+  if (town != null) townTotals[town] = (townTotals[town] || count) + count;
+}
 
 function getPrescriptionPerCity() {
   for(var geo in geocodes) {
@@ -131,58 +126,59 @@ function getPrescriptionPerCity() {
     }
     switch(indicator) {
       case "M":
-        if ("Coatbridge" in cityTotals) {
-          cityTotals["Coatbridge"] += c;
-        }
-        else cityTotals["Coatbridge"] = c;
+        addTotals(c, null, "West Coast", "Coatbridge");
         break;
       case "T":
-        if ("Melrose" in cityTotals) cityTotals["Melrose"]+=c;
-        else cityTotals["Melrose"] = c;
+        addTotals(c, null, "South", "Melrose");
         break;
       case "F":
-        if ("Stirling" in cityTotals) cityTotals["Stirling"]+c;
-        else cityTotals["Stirling"] = c;
+        addTotals(c, "Stirling", "South");
         break;
       case "G":
-        if ("Glasgow" in cityTotals) cityTotals["Glasgow"]+=c;
-        else cityTotals["Glasgow"] = c;
+        addTotals(c, "Glasgow", "West Coast");
         break;
       case"E":
-        if ("Edinburgh" in cityTotals) cityTotals["Edinburgh"]+=c;
-        else cityTotals["Edinburgh"] = c;
+        addTotals(c, "Edinburgh", "East Coast");
         break;
       case "A":
-        if ("Aberdeen" in cityTotals) cityTotals["Aberdeen"]+=c;
-        else cityTotals["Aberdeen"] = c;
+        addTotals(c, "Aberdeen", "North");
         break;
       case "I":
-        if ("Inverness" in cityTotals) cityTotals["Inverness"]+=c;
-        else cityTotals["Inverness"] = c;
+        addTotals(c, "Inverness", "North");
         break;
       case "D":
-        if ("Dundee" in cityTotals) cityTotals["Dundee"]+=c;
-        else cityTotals["Dundee"] = c;
+        addTotals(c, "Dundee", "North");
         break;
       case "K":
-        if ("Prestwick" in cityTotals) cityTotals["Prestwick"]+=c;
-        else cityTotals["Prestwick"] = c;
+        addTotals(c, null, "West Coast", "Prestwick");
         break;
       }
     }
   }
 
-function plotCityTotals() {
-  var cities = Object.keys(cityTotals);
-  var values = Object.keys(cityTotals).map(function(key){return cityTotals[key];});
-  //console.log(cities);
-  //console.log(values);
+
+function plotBarChart(info, values) {
+  var data = [{
+    x: info,
+    y: values,
+    type: 'bar',
+  }];
+  Plotly.newPlot('hist', data);
+}
+
+function plotTownAndCitiesBarChart() {
+  var townsAndCities = Object.keys(cityTotals).concat(Object.keys(townTotals));
+  console.log(townsAndCities);
+
+  var values = (Object.keys(townTotals).map(function(key){return townTotals[key];})).concat(Object.keys(cityTotals).map(function(key){return cityTotals[key];}));
+  console.log(values);
+
   var layout = {
     autosize:true,
   }
 
   var data = [{
-    x: cities,
+    x: townsAndCities,
     y: values,
     type: 'bar',
   }];
@@ -191,38 +187,16 @@ function plotCityTotals() {
 
 function updateCityGraph(filter) {
   if (filter == "coasts") {
-    var coastDict = {"East Coast": 0, "West Coast": 0, "North": 0, "South": 0};
-    var c = Object.keys(cityTotals);
-    console.log(c);
-    c.forEach(function(city) {
-      if (eastCoast.indexOf(city) > -1) {
-        coastDict["East Coast"] += cityTotals[city];
-      }
-      else if (westCoast.indexOf(city) > -1) {
-        coastDict["West Coast"] += cityTotals[city];
-      }
-      else if (north.indexOf(city) > -1) {
-        coastDict["North"] += cityTotals[city];
-      }
-      else if (south.indexOf(city) > -1) {
-        coastDict["South"] += cityTotals[city];
-      }
-    })
-    var coasts = Object.keys(coastDict);
-    var values = Object.keys(coastDict).map(function(key){return coastDict[key];});
-
-    console.log("Coasts: " + coasts);
-    console.log("Values: " + values);
-
-    var data = [{
-      x: coasts,
-      y: values,
-      type: 'bar',
-    }];
-    Plotly.newPlot('hist', data);
+    plotBarChart(Object.keys(coastTotals), Object.keys(coastTotals).map(function(key){return coastTotals[key];}));
   }
   else if (filter == 'citiesAndTowns') {
-    plotCityTotals();
+    plotBarChart(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Object.keys(townTotals).map(function(key){return townTotals[key];})).concat(Object.keys(cityTotals).map(function(key){return cityTotals[key];})))
+  }
+  else if (filter == 'towns') {
+    plotBarChart(Object.keys(townTotals), Object.keys(townTotals).map(function(key){return townTotals[key];}));
+  }
+  else if (filter == 'cities') {
+    plotBarChart(Object.keys(cityTotals), Object.keys(cityTotals).map(function(key){return cityTotals[key];}));
   }
 }
 
@@ -232,63 +206,10 @@ document.getElementById("myList").onchange = function() {
 };
 
 getPrescriptionPerCity();
-plotCityTotals();
-console.log(cityTotals);
+plotBarChart(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Object.keys(townTotals).map(function(key){return townTotals[key];})).concat(Object.keys(cityTotals).map(function(key){return cityTotals[key];})))
 getTotalsPerMonth();
 plotLineGraph();
 getGeocodeData();
 console.log(sizes);
 getDataForMap();
 plotMap();
-
-
-
-/**
-console.log(sizes)
-
-var data = [{
-    type: 'scattergeo',
-    lat: lat,
-    lon: lng,
-    zmin: 0,
-    zmax: 17000,
-    *colorscale: [
-        [0, 'rgb(242,240,247)'], [0.2, 'rgb(218,218,235)'],
-        [0.4, 'rgb(188,189,220)'], [0.6, 'rgb(158,154,200)'],
-        [0.8, 'rgb(117,107,177)'], [1, 'rgb(84,39,143)']
-    ],
-    colorbar: {
-        title: 'Millions USD',
-        thickness: 0.2
-    },
-    marker: {
-        size: sizes,
-        color: 'blue',
-        line: {
-            color: 'blue',
-            width: 2
-        },
-    }
-}];
-
-
-var layout = {
-    width:1200,
-    height:1200,
-    geo:{
-        scope: 'europe',
-        resolution: 50,
-    }
-};
-
-
-data = graph_objs.Data([
-    graph_objs.Scattermapbox(
-        lat=['45.5017'],
-        lon=['-73.5673'],
-        mode='markers',
-    )
-])
-
-Plotly.plot(graph, data, layout);
-*/

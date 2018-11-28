@@ -44,14 +44,14 @@ function getGeocodeData(data) {
     if (data == "cities") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
-      if (p1 == "G" || p1 == "E" || p1 == "F" || p1 == "A" || p1 == "I" || (p1 == "D" && p2 == "D")) {
+      if (p1 == "G" || (p1 == "E" && p2 == "H") || (p1 == "F" && p2 == "K") || (p1 == "A" && p2 == "B") || (p1 == "I" && p2 == "V") || (p1 == "D" && p2 == "D") || (p1 == "P" && p2 == "H")) {
         addToPlot(geoJson);
       }
     }
     else if (data == "towns") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
-      if (p1 != "G" && p1 != "E" && p1 != "F" && p1 != "A" && p1 != "I" && (p1 != "D" && p2 != "D")) {
+      if (p1 != "G" && (p1 != "E" && p2 != "H")  && (p1 != "F" && p2 != "K") && (p1 != "A" && p2 != "B") && (p1 != "I" && p2 != "V") && (p1 != "D" && p2 != "D") && (p1 != "P" && p2 != "H")) {
         addToPlot(geoJson);
       }
     }
@@ -103,7 +103,7 @@ function getTotalsPerMonth(data) {
     if (data == "cities") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
-      if (p1 == "G" || p1 == "E" || p1 == "F" || p1 == "A" || p1 == "I" || (p1 == "D" && p2 == "D")) {
+      if (p1 == "G" || (p1 == "E" && p2 == "H") || (p1 == "F" && p2 == "K") || (p1 == "A" && p2 == "B") || (p1 == "I" && p2 == "V") || (p1 == "D" && p2 == "D") && (p1 == "P" && p2 == "H")) {
         for (var month in geoJson.months) {
           if (month in monthTotals) {
             monthTotals[month] += geoJson.months[month];
@@ -115,7 +115,7 @@ function getTotalsPerMonth(data) {
     else if (data == "towns") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
-      if (p1 != "G" && p1 != "E" && p1 != "F" && p1 != "A" && p1 != "I" && (p1 != "D" && p2 != "D")) {
+      if (p1 != "G" &&  (p1 != "E" && p2 != "H")  && (p1 != "F" && p2 != "K") && (p1 != "A" && p2 != "B") && (p1 != "I" && p2 != "V") && (p1 != "D" && p2 != "D") && (p1 != "P" && p2 != "H")) {
         for (var month in geoJson.months) {
           if (month in monthTotals) {
             monthTotals[month] += geoJson.months[month];
@@ -178,19 +178,27 @@ function getPrescriptionPerCity() {
         addTotals(c, null, "South", "Melrose");
         break;
       case "F":
-        addTotals(c, "Stirling", "South");
+        if (indicator2 == "K") {
+          addTotals(c, "Stirling", "South");
+        }
         break;
       case "G":
         addTotals(c, "Glasgow", "West Coast");
         break;
       case"E":
-        addTotals(c, "Edinburgh", "East Coast");
+        if (indicator2 == "H") {
+          addTotals(c, "Edinburgh", "East Coast");
+        }
         break;
       case "A":
-        addTotals(c, "Aberdeen", "North");
+        if (indicator2 == "B") {
+          addTotals(c, "Aberdeen", "North");
+        }
         break;
       case "I":
-        addTotals(c, "Inverness", "North");
+        if (indicator2 == "V") {
+          addTotals(c, "Inverness", "North");
+        }
         break;
       case "D":
         if (indicator2 == "D") {
@@ -199,6 +207,11 @@ function getPrescriptionPerCity() {
         break;
       case "K":
         addTotals(c, null, "West Coast", "Prestwick");
+        break;
+      case "P":
+        if (indicator2 == "H") {
+          addTotals(c, "Perth", "East Coast");
+        }
         break;
       }
     }

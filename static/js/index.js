@@ -12,36 +12,58 @@ var coastTotals = {};
 var townTotals = {};
 
 
-function getGeocodeData() {
+
+function addToPlot(geoJson) {
+  lat.push(geoJson.lat);
+  lng.push(geoJson.lng);
+
+  var count = 0;
+  for (var m in geoJson.months) {
+    count += geoJson.months[m];
+  }
+
+  sizes.push(count);
+
+  if (count <= 3) {
+    colours.push("white");
+  }
+  else if (count > 3 && count <= 7) {
+    colours.push("yellow");
+  }
+  else if (count > 7 && count <= 12) {
+    colours.push("orange");
+  }
+  else colours.push("red");
+  postcodes.push(geoJson.postcode);
+}
+
+function getGeocodeData(d) {
+  lat = [];
+  lng = [];
+  postcodes = [];
+  sizes = [];
+  colours = [];
   for(var geo in geocodes){
     var geoJson = geocodes[geo]
-    if (data == "cities") {
+    if (d == "cities") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
       if (p1 == "G" || (p1 == "E" && p2 == "H") || (p1 == "F" && p2 == "K") || (p1 == "A" && p2 == "B") || (p1 == "I" && p2 == "V") || (p1 == "D" && p2 == "D") || (p1 == "P" && p2 == "H")) {
         addToPlot(geoJson);
       }
     }
-    else if (data == "towns") {
+    else if (d == "towns") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
       if (p1 != "G" && (p1 != "E" && p2 != "H")  && (p1 != "F" && p2 != "K") && (p1 != "A" && p2 != "B") && (p1 != "I" && p2 != "V") && (p1 != "D" && p2 != "D") && (p1 != "P" && p2 != "H")) {
         addToPlot(geoJson);
       }
     }
-    else if (count > 3 && count<=7) {
-      colours.push("yellow")
+    else {
+      addToPlot(geoJson);
     }
-    else if (count > 7 && count<=12) {
-      colours.push("orange")
-    }
-    else colours.push("red")
-    postcodes.push(geoJson.postcode)
-  };
-}
+  }
 
-
-function getDataForMap() {
   data = [{
     type:'scattermapbox',
     lat: lat,
@@ -56,7 +78,6 @@ function getDataForMap() {
   }]
 
   layout = {
-      style: 'dark',
       autosize: true,
       hovermode:'closest',
       mapbox: {
@@ -69,14 +90,12 @@ function getDataForMap() {
         zoom:5
       }
     }
-}
 
-function plotMap() {
   Plotly.setPlotConfig({
     mapboxAccessToken: 'pk.eyJ1IjoiY2hyaXNiOTcxOSIsImEiOiJjam95aWQ4YncyYzU0M3BsazVqMjZlbHlwIn0.lnsr5Pdz83SXN6kca0Slbw'
   })
 
-  Plotly.plot('graph', data, layout)
+  Plotly.newPlot('graph', data, layout)
 }
 
 
@@ -150,6 +169,7 @@ function getPrescriptionPerCity() {
   for(var geo in geocodes) {
     geoJson = geocodes[geo]
     var indicator = geoJson.postcode.charAt(0);
+    var indicator2 = geoJson.postcode.charAt(1);
     var c = 0;
     for (var i in geoJson.months) {
       c += geoJson.months[i];
@@ -257,5 +277,4 @@ getTotalsPerMonth(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Obje
 plotLineGraph();
 getGeocodeData();
 console.log(sizes);
-getDataForMap();
 plotMap();

@@ -156,10 +156,10 @@ function getPrescriptionPerCity() {
         addTotals(c, null, "West Coast", "Coatbridge");
         break;
       case "T":
-        addTotals(c, null, "South", "Melrose");
+        addTotals(c, null, "Border", "Melrose");
         break;
       case "F":
-        addTotals(c, "Stirling", "South");
+        addTotals(c, "Stirling", "Border");
         break;
       case "G":
         addTotals(c, "Glasgow", "West Coast");
@@ -168,13 +168,13 @@ function getPrescriptionPerCity() {
         addTotals(c, "Edinburgh", "East Coast");
         break;
       case "A":
-        addTotals(c, "Aberdeen", "North");
+        addTotals(c, "Aberdeen", "North Coast");
         break;
       case "I":
-        addTotals(c, "Inverness", "North");
+        addTotals(c, "Inverness", "North Coast");
         break;
       case "D":
-        addTotals(c, "Dundee", "North");
+        addTotals(c, "Dundee", "North Coast");
         break;
       case "K":
         addTotals(c, null, "West Coast", "Prestwick");

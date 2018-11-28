@@ -183,7 +183,7 @@ function getPrescriptionPerCity() {
         break;
       case "F":
         if (indicator2 == "K") {
-          addTotals(c, "Stirling", "South");
+          addTotals(c, "Stirling", "Border");
         }
         break;
       case "G":
@@ -196,12 +196,12 @@ function getPrescriptionPerCity() {
         break;
       case "A":
         if (indicator2 == "B") {
-          addTotals(c, "Aberdeen", "North");
+          addTotals(c, "Aberdeen", "North Coast");
         }
         break;
       case "I":
         if (indicator2 == "V") {
-          addTotals(c, "Inverness", "North");
+          addTotals(c, "Inverness", "North Coast");
         }
         break;
       case "D":
@@ -277,4 +277,3 @@ getTotalsPerMonth(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Obje
 plotLineGraph();
 getGeocodeData();
 console.log(sizes);
-plotMap();

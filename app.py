@@ -49,10 +49,19 @@ def getPostcode(gpID):
 def generateAnalysis(drug):
     paragraphs = []
     if drug == 'Warfarin':
-        paragraphs.append("Cardivascular Diseases are one of the leading causes of death in the Scotland. Warfarin is used as a way to thin patients blood and prevent blood clots, thus it is a useful indicator of the cardiovascular health of an area."+
-                "From our distribution map above and using warfarin as our indicator, it becomes clear that the west of Scotland has a much higher incidence of cardiovascular disease than the rest of the country. "+
-                "The central belt in general has a higher incidence and this trends downwards the further north you go. This is posibly due to the greater availibility of fast foods availible in more densly populated areas.")
-        p2 =
+        paragraphs.append(
+            "Cardivascular Diseases are one of the leading causes of death in the Scotland. Warfarin is used as a way to thin patients blood and prevent blood clots, thus it is a useful indicator of the cardiovascular health of an area."+
+            "From our distribution map above and using warfarin as our indicator, it becomes clear that the west of Scotland has a much higher incidence of cardiovascular disease than the rest of the country. "+
+            "The central belt in general has a higher incidence and this trends downwards the further north you go. This is posibly due to the greater availibility of fast foods availible in more densly populated areas."
+        )
+        paragraphs.append(
+            "Unfortunately, due to the volitility of the dataset it is somewhat difficult to infer any corrolation from the line graph above. The data set has gaps due to lack of data availibility for certain months, and August and February"+
+            "have vastly larger datasets than the other months for reasons that we are not entirely certain about. In an ideal situation where the data is not simply from opensourced data but rather the NHS Prescription database, more useful information"+
+            "could be infered from this graph. In particular this graph would be useful when tracking antibiotic prescriptions as currently there is a widespread push to lower antibiotic usage due to the growing problem of antibiotic resistance."
+        )
+        paragraphs.append(
+            ""
+        )
 
 
 @app.route("/")

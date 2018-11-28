@@ -60,6 +60,8 @@ def generateAnalysis(drug):
             "could be infered from this graph. In particular this graph would be useful when tracking antibiotic prescriptions as currently there is a widespread push to lower antibiotic usage due to the growing problem of antibiotic resistance."
         )
         paragraphs.append(
+            "The bar chart above shows the distribution across cities, town and cities, coasts and towns.  "+
+            ""+
             ""
         )
     return paragraphs

@@ -35,26 +35,28 @@
     <br>
     <div class = "container" style="background-color:#C3E1FF; border-radius:8px; padding-top:20px; padding-bottom: 20px; height:auto; width:auto">
       <div class="row">
-        <div class="col-lg-5" id="graph"></div>
+          <div class="col-lg-5" id="graph">
+            <div id="graph"></div>
+          </div>
+
         <div class="col-lg-7">
-        <div id="hist"></div>
-        <div id="line"></div>
-      </div>
-    </div>
-    <div class="row" style="background-color:#C3E1FF; border-radius:8px; padding-top:20px; padding-bottom: 20px; height:auto">
-      <div class="col-lg-12">
-        <p>Alternatively, type in a prescription medicine you want to see graphed and our fantastic software will do it for you!</p>
-      </div>
-      <form action="/graphs/search" method="post">
-        <div class="input-group col-lg-12">
-          <input id='drugSearch' name='drug' type="text" class="form-control" placeholder="Search for...">
-          <span class="input-group-btn"><button type="submit" name='searchButton'  id='searchButton' type="button" class="btn btn-md btn-primary">Click Here</button></span>
+          <div id="hist"></div>
+          <div id="line"></div>
         </div>
-      </form>
+        <p>{{paragraphs}}</p>
+      </div>
+      <div class="row" style="background-color:#C3E1FF; border-radius:8px; padding-top:20px; padding-bottom: 20px; height:auto">
+        <div class="col-lg-12">
+          <p>Alternatively, type in a prescription medicine you want to see graphed and our fantastic software will do it for you!</p>
+        </div>
+        <form action="/graphs/search" method="post">
+          <div class="input-group col-lg-12">
+            <input id='drugSearch' name='drug' type="text" class="form-control" placeholder="Search for...">
+            <span class="input-group-btn"><button type="submit" name='searchButton'  id='searchButton' type="button" class="btn btn-md btn-primary">Click Here</button></span>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
-
-
 
     <script src="static/js/index.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

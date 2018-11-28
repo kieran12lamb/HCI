@@ -48,11 +48,23 @@ def getPostcode(gpID):
 
 def generateAnalysis(drug):
     paragraphs = []
+    paragraph = ''
     if drug == 'Warfarin':
         paragraphs.append(
             "Cardivascular Diseases are one of the leading causes of death in the Scotland. Warfarin is used as a way to thin patients blood and prevent blood clots, thus it is a useful indicator of the cardiovascular health of an area."+
             "From our distribution map above and using warfarin as our indicator, it becomes clear that the west of Scotland has a much higher incidence of cardiovascular disease than the rest of the country. "+
-            "The central belt in general has a higher incidence and this trends downwards the further north you go. This is posibly due to the greater availibility of fast foods availible in more densly populated areas."
+            "The central belt in general has a higher incidence and this trends downwards the further north you go. This is posibly due to the greater availibility of fast foods availible in more densly populated areas.")
+        paragraphs.append(
+            "Unfortunately, due to the volitility of the dataset it is somewhat difficult to infer any corrolation from the line graph above. The data set has gaps due to lack of data availibility for certain months, and August and February"+
+            "have vastly larger datasets than the other months for reasons that we are not entirely certain about. In an ideal situation where the data is not simply from opensourced data but rather the NHS Prescription database, more useful information"+
+            "could be infered from this graph. In particular this graph would be useful when tracking antibiotic prescriptions as currently there is a widespread push to lower antibiotic usage due to the growing problem of antibiotic resistance.")
+        paragraphs.append(
+            "The bar chart above shows the distribution across cities, town and cities, coasts and towns. The distribution again re-emphasises what our main graph shows, with the west of scotland again being the primary source of cardiovascular disease ")
+    elif drug == 'Methadone':
+        paragraphs.append(
+            "Methadone is primarily used to treat the withdrawl symptoms associated with opiate abuse. The distribution of Methadone therefore can be used as an indicator for the level of opiate abuse within an area."+
+            "Edinburgh appears to be the city with the largest concentration of opiate abusers, however it appears that Glasgow is not far behind."+
+            "The south west is the worst overall for opiate abuse, but the south east is very similar."
         )
         paragraphs.append(
             "Unfortunately, due to the volitility of the dataset it is somewhat difficult to infer any corrolation from the line graph above. The data set has gaps due to lack of data availibility for certain months, and August and February"+
@@ -60,11 +72,24 @@ def generateAnalysis(drug):
             "could be infered from this graph. In particular this graph would be useful when tracking antibiotic prescriptions as currently there is a widespread push to lower antibiotic usage due to the growing problem of antibiotic resistance."
         )
         paragraphs.append(
-            "The bar chart above shows the distribution across cities, town and cities, coasts and towns.  "+
-            ""+
-            ""
+            "The bar chart above shows the distribution across cities, town and cities and coasts. Edinburgh, can easily bee seen as the worst city, with regard to opiate abuse."
         )
-    return paragraphs
+    elif drug == 'Amoxicillin':
+        paragraphs.append(
+            "Amoxicillin is an antibiotic that can be used for a wide variety of bacterial infections such as chest infections, ear infections and numerous others."+
+            "With current issues associated with antibiotic resistance, visualising the distribution and volume of antibiotic prescriptions being taken out has become an ever more improtant issue. "+
+            "As expected, Amoxicillin distribution is the most widespread of the three due to it's use for a wide variety of treatments. All the cities have a very high usage. "
+        )
+        paragraphs.append(
+            "Unfortunately, due to the volitility of the dataset it is somewhat difficult to infer any corrolation from the line graph above. The data set has gaps due to lack of data availibility for certain months, and August and February"+
+            "have vastly larger datasets than the other months for reasons that we are not entirely certain about. In an ideal situation where the data is not simply from opensourced data but rather the NHS Prescription database, more useful information"+
+            "could be infered from this graph. In particular this graph would be useful when tracking antibiotic prescriptions as currently there is a widespread push to lower antibiotic usage due to the growing problem of antibiotic resistance. Ideally we"+
+            "would see a downwards trend over months with GP's now being stricter over antibiotic handouts."
+        )
+        paragraphs.append("The bar chart above shows the distribution across cities, town and cities, coasts and towns.")
+    if(len(paragraphs)!=0):
+        paragraph = paragraphs[0]+'\n'+paragraphs[1]+'\n'+paragraphs[2]
+    return paragraph
 
 
 @app.route("/")
@@ -105,4 +130,4 @@ def graphs(drug):
                     'lng':postcode['lng'],
                     'months':{prescriptions['month']:1}
                 }
-    return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes,prescriptionName = drug, map=data)
+    return render_template('graphs.html',prescriptionData = prescriptionData,geocodes = geocodes,prescriptionName = drug, map=data,paragraphs = paragraphs)

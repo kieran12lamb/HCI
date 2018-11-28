@@ -78,16 +78,43 @@ function plotMap() {
 
 
 //Line graph
-function getTotalsPerMonth() {
+function getTotalsPerMonth(data) {
+  monthTotals = [];
   for(var geo in geocodes){
-    data = geocodes[geo]
-    for (var month in data.months) {
-      if (month in monthTotals) {
-        monthTotals[month] += data.months[month];
+    geoJson = geocodes[geo]
+    if (data == "cities") {
+      var p1 = geoJson.postcode[0];
+      var p2 = geoJson.postcode[1];
+      if (p1 == "G" || p1 == "E" || p1 == "F" || p1 == "A" || p1 == "I" || (p1 == "D" && p2 == "D")) {
+        for (var month in geoJson.months) {
+          if (month in monthTotals) {
+            monthTotals[month] += geoJson.months[month];
+          }
+          else monthTotals[month] = geoJson.months[month];
+        }
       }
-      else monthTotals[month] = data.months[month];
+    }
+    else if (data == "towns") {
+      var p1 = geoJson.postcode[0];
+      var p2 = geoJson.postcode[1];
+      if (p1 != "G" && p1 != "E" && p1 != "F" && p1 != "A" && p1 != "I" && (p1 != "D" && p2 != "D")) {
+        for (var month in geoJson.months) {
+          if (month in monthTotals) {
+            monthTotals[month] += geoJson.months[month];
+          }
+          else monthTotals[month] = geoJson.months[month];
+        }
+      }
+    }
+    else {
+    for (var month in geoJson.months) {
+      if (month in monthTotals) {
+        monthTotals[month] += geoJson.months[month];
+      }
+      else monthTotals[month] = geoJson.months[month];
     }
   }
+}
 }
 
 function plotLineGraph() {
@@ -202,12 +229,15 @@ function updateCityGraph(filter) {
 
 document.getElementById("myList").onchange = function() {
    updateCityGraph(this.value);
+   getGeocodeData(this.value);
+   getTotalsPerMonth(this.value);
+   plotLineGraph();
    return false
 };
 
 getPrescriptionPerCity();
-plotBarChart(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Object.keys(townTotals).map(function(key){return townTotals[key];})).concat(Object.keys(cityTotals).map(function(key){return cityTotals[key];})))
-getTotalsPerMonth();
+plotBarChart(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Object.keys(cityTotals).map(function(key){return cityTotals[key];})).concat(Object.keys(townTotals).map(function(key){return townTotals[key];})))
+getTotalsPerMonth(Object.keys(cityTotals).concat(Object.keys(townTotals)), (Object.keys(cityTotals).map(function(key){return cityTotals[key];})).concat(Object.keys(townTotals).map(function(key){return townTotals[key];})));
 plotLineGraph();
 getGeocodeData();
 console.log(sizes);

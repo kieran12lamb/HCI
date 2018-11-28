@@ -55,7 +55,7 @@ function getGeocodeData(d) {
     else if (d == "towns") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
-      if (p1 != "G" && (p1 != "E" && p2 != "H")  && (p1 != "F" && p2 != "K") && (p1 != "A" && p2 != "B") && (p1 != "I" && p2 != "V") && (p1 != "D" && p2 != "D") && (p1 != "P" && p2 != "H")) {
+      if (p1 != "G" &&  !(p1 == "E" && p2 == "H")  && !(p1 == "F" && p2 == "K") && !(p1 == "A" && p2 == "B") && !(p1 == "I" && p2 == "V") && !(p1 == "D" && p2 == "D") && !(p1 == "P" && p2 == "H")) {
         addToPlot(geoJson);
       }
     }
@@ -69,7 +69,6 @@ function getGeocodeData(d) {
     lat: lat,
     lon: lng,
     postcode: postcodes,
-    hoverinfo: 'postcode',
     mode: 'markers',
     marker: {
       size: sizes,
@@ -119,7 +118,7 @@ function getTotalsPerMonth(data) {
     else if (data == "towns") {
       var p1 = geoJson.postcode[0];
       var p2 = geoJson.postcode[1];
-      if (p1 != "G" &&  (p1 != "E" && p2 != "H")  && (p1 != "F" && p2 != "K") && (p1 != "A" && p2 != "B") && (p1 != "I" && p2 != "V") && (p1 != "D" && p2 != "D") && (p1 != "P" && p2 != "H")) {
+      if (p1 != "G" &&  !(p1 == "E" && p2 == "H")  && !(p1 == "F" && p2 == "K") && !(p1 == "A" && p2 == "B") && !(p1 == "I" && p2 == "V") && !(p1 == "D" && p2 == "D") && !(p1 == "P" && p2 == "H")) {
         for (var month in geoJson.months) {
           if (month in monthTotals) {
             monthTotals[month] += geoJson.months[month];
@@ -150,12 +149,15 @@ function plotLineGraph() {
     y: values,
     mode: 'markers+lines'
   };
-  var dat = [trace];
-  var lout = {
+  var data = [trace];
+  var layout = {
     autoscale: true,
-    title: "Number of prescriptions by month"
+    title: "Number of prescriptions by month",
+    yaxis: {
+      title: 'Number of Prescriptions'
+    }
   };
-  Plotly.newPlot('line', dat, lout);
+  Plotly.newPlot('line', data, layout);
 }
 //
 
@@ -205,7 +207,12 @@ function getPrescriptionPerCity() {
         }
         break;
       case "D":
-        addTotals(c, "Dundee", "North Coast");
+        if (indicator2 == "D") {
+          addTotals(c, "Dundee", "North Coast");
+        }
+        else if (indicator2 = "G") {
+          addTotals(c, null, "Border", "Dumfries");
+        }
         break;
       case "K":
         addTotals(c, null, "West Coast", "Prestwick");
@@ -226,26 +233,16 @@ function plotBarChart(info, values) {
     y: values,
     type: 'bar',
   }];
-  Plotly.newPlot('hist', data);
-}
-
-function plotTownAndCitiesBarChart() {
-  var townsAndCities = Object.keys(cityTotals).concat(Object.keys(townTotals));
-  console.log(townsAndCities);
-
-  var values = (Object.keys(townTotals).map(function(key){return townTotals[key];})).concat(Object.keys(cityTotals).map(function(key){return cityTotals[key];}));
-  console.log(values);
 
   var layout = {
-    autosize:true,
-  }
+    autoscale: true,
+    title: 'Number of Prescriptions by Place',
+    yaxis: {
+      title: 'Number of Prescriptions'
+    }
+  };
 
-  var data = [{
-    x: townsAndCities,
-    y: values,
-    type: 'bar',
-  }];
-  Plotly.newPlot('hist', data);
+  Plotly.newPlot('hist', data, layout);
 }
 
 function updateCityGraph(filter) {

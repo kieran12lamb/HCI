@@ -20,35 +20,30 @@
 
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 border-bottom shadow-sm" style="background-color: #C3E1FF">
       <h5 class="my-0 mr-md-auto font-weight-normal"><a href="/" style="color:black"><img src="/static/images/pill_favicon.gif" style="height:auto;width:50px"></img>Medicine Mapper</color></a></h5>
-      <nav class="my-2 my-md-0 mr-md-3">
-      </nav>
+      <h1 class="my-0 mr-md-auto font-weight-normal" style="align-self: left">Prescription : {{prescriptionName}}</h1>
+      <form style="padding-right:100px">
+        <select id="myList" >
+          <option value="citiesAndTowns">Cities and Towns</option>
+          <option value="coasts">Coasts</option>
+          <option value="cities">Cities</option>
+          <option value="towns">Towns</option>
+        </select>
+      </form>
       <a href="/about" class="card-header input-group-btn" style="background-color: #327ba7; border-radius:8px; color:white">About Us</a>
     </div>
-
-    <div>
-      <h1 align="center">Prescription : {{prescriptionName}}</h1>
-    </div>
-
-
-
-    <form>
-    <select id="myList" >
-      <option value="citiesAndTowns">Cities and Towns</option>
-      <option value="coasts">Coasts</option>
-      <option value="cities">Cities</option>
-      <option value="towns">Towns</option>
-    </select>
-
-    <form>
-
+    <br>
+    <br>
+    <br>
+    <div class = "container" style="background-color:#C3E1FF; border-radius:8px; padding-top:20px; padding-bottom: 20px; height:auto">
       <div class="row">
-          <div class="col-lg-5" id="graph"></div>
-          <div class="col-lg-7">
-        <div id="line"></div>
+        <div class="col-lg-5" id="graph"></div>
+        <div class="col-lg-7">
         <div id="hist"></div>
+        <div id="line"></div>
+      </div>
     </div>
 
-    <footer class="pt-4 my-md-5 pt-md-5 border-top"></footer>
+    <footer class="pt-4 my-md-5 pt-md-5 border-top" style="padding-bottom: 100px  "></footer>
     <script src="static/js/index.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
